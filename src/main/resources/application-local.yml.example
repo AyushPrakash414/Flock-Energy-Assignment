@@ -1,0 +1,6 @@
+# Example local development configuration template
+# Copy this file to application-local.yml and fill in your actual credentials.
+urja:
+  portal:
+    email: your-email@example.com
+    password: your-password

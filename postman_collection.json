@@ -1,0 +1,191 @@
+{
+  "info": {
+    "_postman_id": "flock-energy-meterops-api",
+    "name": "Urja Meter Ops API",
+    "description": "Postman Collection for testing the 5 primary endpoints of the Urja Meter Ops API service.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. List Meters (Paginated)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/meters?page=1&size=10",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "meters"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "1",
+              "description": "Page number (1-indexed)"
+            },
+            {
+              "key": "size",
+              "value": "10",
+              "description": "Page size (1 to 100)"
+            }
+          ]
+        },
+        "description": "Retrieves paginated list of meters with complete hierarchy and geo coordinates."
+      },
+      "response": []
+    },
+    {
+      "name": "2. Search Meters",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/meters?search=J100002",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "meters"
+          ],
+          "query": [
+            {
+              "key": "search",
+              "value": "J100002",
+              "description": "Search by meter ID, serial number, make, or DT code"
+            }
+          ]
+        },
+        "description": "Filters meters by query term (e.g. meter ID, serial number, make, or DT code)."
+      },
+      "response": []
+    },
+    {
+      "name": "3. Get Meter Details",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/meters/J100002",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "meters",
+            "J100002"
+          ]
+        },
+        "description": "Returns full details for a specific meter (nameplate, full 7-level hierarchy, geo coordinates)."
+      },
+      "response": []
+    },
+    {
+      "name": "4. Get Meter Consumption",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/meters/J100002/consumption",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "meters",
+            "J100002",
+            "consumption"
+          ]
+        },
+        "description": "Fetches live time-series consumption readings (kWh, kVAh, voltR) directly from the portal."
+      },
+      "response": []
+    },
+    {
+      "name": "5. List Distribution Transformers",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/transformers?page=1&size=10",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "transformers"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "1",
+              "description": "Page number (1-indexed)"
+            },
+            {
+              "key": "size",
+              "value": "10",
+              "description": "Page size (1 to 100)"
+            }
+          ]
+        },
+        "description": "Returns a paginated list of distribution transformers (code, name, feederCode, capacityKva)."
+      },
+      "response": []
+    },
+    {
+      "name": "6. Error Test - 404 Unknown Meter",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/meters/NON_EXISTENT_METER",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "meters",
+            "NON_EXISTENT_METER"
+          ]
+        },
+        "description": "Validates error response when querying an unknown meter ID."
+      },
+      "response": []
+    },
+    {
+      "name": "7. Error Test - 400 Bad Page Parameter",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/meters?page=0",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "meters"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "0"
+            }
+          ]
+        },
+        "description": "Validates 400 Bad Request when passing page < 1."
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}
