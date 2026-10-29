@@ -1,0 +1,15 @@
+services:
+  meter-ops-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: urja-meter-ops-api
+    ports:
+      - "8080:8080"
+    environment:
+      - URJA_PORTAL_EMAIL=${URJA_PORTAL_EMAIL:-}
+      - URJA_PORTAL_PASSWORD=${URJA_PORTAL_PASSWORD:-}
+      - URJA_PORTAL_BASE_URL=${URJA_PORTAL_BASE_URL:-https://urja-ops.flockenergy.tech}
+      - SERVER_PORT=8080
+      - SPRING_PROFILES_ACTIVE=prod
+    restart: unless-stopped

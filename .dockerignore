@@ -1,0 +1,12 @@
+.git
+.gitignore
+target/
+*.log
+Assets/*.mp4
+Assets/*.mov
+Assets/*.mkv
+.idea/
+*.iml
+.vscode/
+application-local.yml
+.env

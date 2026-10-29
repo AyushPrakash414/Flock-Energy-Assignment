@@ -9,6 +9,7 @@ A production-grade, documented Spring Boot REST API that provides programmatic a
 ![Caffeine Cache](https://img.shields.io/badge/Cache-Caffeine-orange?style=flat)
 ![Maven](https://img.shields.io/badge/Build-Maven_3.9+-C71A36?style=flat&logo=apachemaven&logoColor=white)
 ![OpenAPI 3.0](https://img.shields.io/badge/API_Docs-OpenAPI_3.0-85EA2D?style=flat&logo=swagger&logoColor=black)
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat&logo=docker&logoColor=white)
 
 ---
 
@@ -425,6 +426,42 @@ java -jar target/urja-meter-ops-1.0.0.jar
 ```
 
 The service initializes on **`http://localhost:8080`**.
+
+---
+
+### Running with Docker (Zero Setup Required)
+
+If you do not have Java 21 or Maven installed, you can build and run the entire application using Docker with zero local dependencies:
+
+#### Method A: Docker Compose (Quickest)
+
+```bash
+# 1. Provide your credentials via environment variables
+export URJA_PORTAL_EMAIL="your_portal_email"
+export URJA_PORTAL_PASSWORD="your_portal_password"
+
+# 2. Build and start the container
+docker compose up --build
+```
+
+*(On Windows PowerShell, use `$env:URJA_PORTAL_EMAIL="your_portal_email"` and `$env:URJA_PORTAL_PASSWORD="your_portal_password"`)*
+
+#### Method B: Standalone Docker Build & Run
+
+```bash
+# 1. Build the lightweight multi-stage image
+docker build -t urja-meter-ops-api .
+
+# 2. Run container with credentials passed as environment variables
+docker run -d -p 8080:8080 \
+  -e URJA_PORTAL_EMAIL="your_portal_email" \
+  -e URJA_PORTAL_PASSWORD="your_portal_password" \
+  --name urja-meter-ops \
+  urja-meter-ops-api
+```
+
+The container starts in `< 3 seconds` on **`http://localhost:8080`**.
+
 
 ### 5. Verify the Service
 
