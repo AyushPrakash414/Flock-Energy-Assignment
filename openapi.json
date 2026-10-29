@@ -1,0 +1,361 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Flock Energy Meter API",
+    "description": "Clean REST API that wraps the legacy Urja Meter Ops portal,\nexposing meter information, network hierarchy, consumption\nreadings, and distribution transformer data in structured JSON.\n",
+    "contact": {
+      "name": "Flock Energy Engineering",
+      "url": "https://flockenergy.tech"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Meters",
+      "description": "Meter information, search, and consumption readings"
+    },
+    {
+      "name": "Transformers",
+      "description": "Distribution transformer listing"
+    }
+  ],
+  "paths": {
+    "/api/transformers": {
+      "get": {
+        "tags": [
+          "Transformers"
+        ],
+        "summary": "List distribution transformers",
+        "description": "Returns a paginated list of distribution transformers\nwith code, name, feeder code, and capacity in kVA.\n",
+        "operationId": "listTransformers",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number (1-indexed)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Items per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponseTransformerResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/meters": {
+      "get": {
+        "tags": [
+          "Meters"
+        ],
+        "summary": "List or search meters",
+        "description": "Returns a paginated list of meters with full detail\n(hierarchy, geo, installation info). Optionally filter by\na search term that matches against meter ID, serial number,\nmake, or DT code.\n",
+        "operationId": "listMeters",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Search term (meter ID, serial, make, or DT code)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number (1-indexed)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Items per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponseMeterResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/meters/{meterId}": {
+      "get": {
+        "tags": [
+          "Meters"
+        ],
+        "summary": "Get meter details",
+        "description": "Returns the complete record for a single meter including\nnameplate information, network hierarchy (zone through DT),\nand geographic coordinates.\n",
+        "operationId": "getMeterDetail",
+        "parameters": [
+          {
+            "name": "meterId",
+            "in": "path",
+            "description": "Meter ID (e.g. J100002)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeterResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/meters/{meterId}/consumption": {
+      "get": {
+        "tags": [
+          "Meters"
+        ],
+        "summary": "Get meter consumption readings",
+        "description": "Returns time-stamped consumption readings for a meter\nincluding kWh, kVAh, and voltage V(R). Data is fetched\nlive from the upstream portal (not cached).\n",
+        "operationId": "getMeterConsumption",
+        "parameters": [
+          {
+            "name": "meterId",
+            "in": "path",
+            "description": "Meter ID (e.g. J100002)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PageResponseTransformerResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransformerResponse"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "TransformerResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "feederCode": {
+            "type": "string"
+          },
+          "capacityKva": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "GeoLocationDto": {
+        "type": "object",
+        "properties": {
+          "lat": {
+            "type": "number",
+            "format": "double"
+          },
+          "lng": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "HierarchyDto": {
+        "type": "object",
+        "properties": {
+          "zone": {
+            "$ref": "#/components/schemas/HierarchyNodeDto"
+          },
+          "circle": {
+            "$ref": "#/components/schemas/HierarchyNodeDto"
+          },
+          "division": {
+            "$ref": "#/components/schemas/HierarchyNodeDto"
+          },
+          "subdivision": {
+            "$ref": "#/components/schemas/HierarchyNodeDto"
+          },
+          "substation": {
+            "$ref": "#/components/schemas/HierarchyNodeDto"
+          },
+          "feeder": {
+            "$ref": "#/components/schemas/HierarchyNodeDto"
+          },
+          "dt": {
+            "$ref": "#/components/schemas/HierarchyNodeDto"
+          }
+        }
+      },
+      "HierarchyNodeDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          }
+        }
+      },
+      "MeterResponse": {
+        "type": "object",
+        "properties": {
+          "meterId": {
+            "type": "string"
+          },
+          "serialNo": {
+            "type": "string"
+          },
+          "make": {
+            "type": "string"
+          },
+          "phaseType": {
+            "type": "string"
+          },
+          "installStatus": {
+            "type": "string"
+          },
+          "installType": {
+            "type": "string"
+          },
+          "build": {
+            "type": "string"
+          },
+          "dtCode": {
+            "type": "string"
+          },
+          "hierarchy": {
+            "$ref": "#/components/schemas/HierarchyDto"
+          },
+          "geo": {
+            "$ref": "#/components/schemas/GeoLocationDto"
+          }
+        }
+      },
+      "PageResponseMeterResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MeterResponse"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    }
+  }
+}

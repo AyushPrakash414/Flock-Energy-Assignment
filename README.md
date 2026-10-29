@@ -546,21 +546,25 @@ While the present suite verifies controller contracts and crypto logic, it lacks
 
 ## OpenAPI Documentation
 
-API documentation is generated dynamically at runtime using `springdoc-openapi-starter-webmvc-ui` (v2.8.6):
+A complete, clean OpenAPI 3.1 specification describing our API (not the legacy portal's) is provided in the repository:
 
-- **Interactive Swagger UI**: Explore and execute requests directly in your browser:
+- **Static OpenAPI Spec**: [`openapi.json`](./openapi.json) in the repository root.
+- **Interactive Swagger UI (Server Running)**: Explore and test live endpoints in your browser:
   ```
   http://localhost:8080/swagger-ui.html
   ```
-- **OpenAPI 3.0 Specification**: Download or inspect the raw JSON schema:
+- **Modern Scalar API Reference (Standalone Offline / Browser)**:
+  Open [`scalar.html`](./scalar.html) directly in any browser to explore the rendered interactive API documentation powered by [Scalar](https://github.com/scalar/scalar).
+- **Runtime JSON Schema**:
   ```
   http://localhost:8080/v3/api-docs
   ```
 
-To generate a static `openapi.json` file on disk while the server is running:
+### Automated Spec Generation
+The specification is automatically kept in sync with the codebase via [`OpenApiGeneratorTest.java`](src/test/java/com/flockenergy/meterops/OpenApiGeneratorTest.java). Running Maven tests automatically regenerates and formats `openapi.json`:
 
 ```bash
-curl -s http://localhost:8080/v3/api-docs > openapi.json
+mvn test -Dtest=OpenApiGeneratorTest
 ```
 
 A pre-configured Postman collection is also provided in the repository root: [`postman_collection.json`](./postman_collection.json).
@@ -568,6 +572,8 @@ A pre-configured Postman collection is also provided in the repository root: [`p
 ---
 
 ## Reflection
+
+> A dedicated, standalone reflection document is also available at [**`REFLECTION.md`**](./REFLECTION.md).
 
 ### 1. What assumptions did you make?
 - Assumed the legacy Urja portal is the sole authoritative data store; local caching is an optimization and resilience layer rather than a primary store.
@@ -605,8 +611,10 @@ A pre-configured Postman collection is also provided in the repository root: [`p
 
 ## Supporting Documentation
 
+- **Project Reflection**: [`REFLECTION.md`](./REFLECTION.md) — Comprehensive responses to the reflection questions, assumptions, architectural criticisms, and lessons learned.
+- **Protocol & Reverse-Engineering Analysis**: [`protocol.md`](./protocol.md) — Comprehensive technical write-up detailing how the upstream Urja portal actually works, data surfaces, session lifecycle, HMAC-SHA256 signature mechanics, and discovered quirks.
 - **Postman Collection**: [`postman_collection.json`](./postman_collection.json) — Ready-to-import Postman collection with parameterized requests for all 5 endpoints, search filters, and error tests.
-- **OpenAPI Schema**: Accessible live at `/v3/api-docs` when the service is running, or exportable to `openapi.json` via curl.
+- **OpenAPI 3.1 Specification**: [`openapi.json`](./openapi.json) — Static schema for the clean API. Also viewable interactively via [`scalar.html`](./scalar.html) or Swagger UI (`http://localhost:8080/swagger-ui.html`).
 - **Protocol & Integration Details**: Detailed reverse-engineering insights, session cookie lifecycles, and HMAC signing payload structures are fully documented in the client implementation source code:
   - [`UrjaAuthService.java`](src/main/java/com/flockenergy/meterops/client/UrjaAuthService.java) (Session acquisition and lock handling)
   - [`HmacSignerService.java`](src/main/java/com/flockenergy/meterops/client/HmacSignerService.java) (HMAC-SHA256 signature generation)
