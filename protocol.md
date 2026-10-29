@@ -14,9 +14,7 @@
 
 ### 3. Demo Walkthrough Video
 
-<video src="./Assets/demo_walkthrough_compressed.mp4" poster="./Assets/video_thumbnail.png" controls="controls" style="max-width: 100%; width: 100%;">
-  Your browser does not support the video tag.
-</video>
+https://github.com/user-attachments/assets/ca6e9e7c-aefc-43e4-a76b-b1cc01594ff2
 
 ---
 
@@ -97,7 +95,9 @@ By inspecting the portal's JavaScript bundle, we discovered client-side request 
    }
    ```
 2. The frontend constructs an exact 4-line newline-delimited payload:
-   $$\text{payload} = \text{HTTP\_METHOD} + \text{"\textbackslash n"} + \text{PATH} + \text{"\textbackslash n"} + \text{QUERY\_STRING} + \text{"\textbackslash n"} + \text{TIMESTAMP}$$
+   ```text
+   payload = HTTP_METHOD + "\n" + PATH + "\n" + QUERY_STRING + "\n" + TIMESTAMP
+```
 
    **Concrete Example**:
    ```text
@@ -107,7 +107,9 @@ By inspecting the portal's JavaScript bundle, we discovered client-side request 
    1730217000
    ```
 3. An HMAC-SHA256 hash is computed using the `signingSecret` as the key:
-   $$\text{signature} = \text{HexEncode}(\text{HMAC-SHA256}(\text{signingSecret}, \text{payload}))$$
+   ```text
+   signature = HexEncode(HMAC_SHA256(signingSecret, payload))
+```
 4. The request is dispatched with two required custom HTTP headers:
    ```http
    GET /portal/export?page=1 HTTP/1.1
