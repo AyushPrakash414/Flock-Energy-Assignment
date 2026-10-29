@@ -16,8 +16,19 @@ This service acts as an abstraction and mediation layer. It handles upstream aut
 
 ---
 
+## Demo Walkthrough
+
+<video src="./Assets/f8b65624-9de8-492a-8d6e-0564cb9841ec.mp4" controls="controls" style="max-width: 100%;">
+  Your browser does not support the video tag.
+</video>
+
+> 📹 **Video Demonstration**: [View / Download the demo video (`./Assets/f8b65624-9de8-492a-8d6e-0564cb9841ec.mp4`)](./Assets/f8b65624-9de8-492a-8d6e-0564cb9841ec.mp4)
+
+---
+
 ## Table of Contents
 
+- [Demo Walkthrough](#demo-walkthrough)
 - [Key Features](#key-features)
 - [System Architecture](#system-architecture)
 - [How Caching Works](#how-caching-works)
