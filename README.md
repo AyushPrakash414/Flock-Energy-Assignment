@@ -18,11 +18,13 @@ This service acts as an abstraction and mediation layer. It handles upstream aut
 
 ## Demo Walkthrough
 
-<video src="./Assets/f8b65624-9de8-492a-8d6e-0564cb9841ec.mp4" controls="controls" style="max-width: 100%;">
-  Your browser does not support the video tag.
-</video>
-
-> 📹 **Video Demonstration**: [View / Download the demo video (`./Assets/f8b65624-9de8-492a-8d6e-0564cb9841ec.mp4`)](./Assets/f8b65624-9de8-492a-8d6e-0564cb9841ec.mp4)
+<p align="center">
+  <a href="https://github.com/AyushPrakash414/Flock-Energy-Assignment/raw/master/Assets/f8b65624-9de8-492a-8d6e-0564cb9841ec.mp4">
+    <img src="./Assets/video_thumbnail.png" alt="Demo Video Walkthrough" width="100%" />
+  </a>
+  <br/>
+  <em>▶ Click the preview image above to watch or download the complete walkthrough video.</em>
+</p>
 
 ---
 
