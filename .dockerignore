@@ -10,3 +10,4 @@ Assets/*.mkv
 .vscode/
 application-local.yml
 .env
+
